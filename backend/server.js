@@ -17,6 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const __dirname = path.resolve();
+app.set("trust proxy", 1);
 
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
