@@ -1,12 +1,13 @@
-import Redis from "ioredis";
+import { createClient } from "redis";
 import dotenv from "dotenv";
-
 dotenv.config();
 
-// Upstash requires TLS
-export const redis = new Redis(process.env.UPSTASH_REDIS_URL, {
-  tls: {},
+export const redis = createClient({
+  url: process.env.UPSTASH_REDIS_URL,
 });
 
-redis.on("connect", () => console.log("Redis connected"));
 redis.on("error", (err) => console.error("Redis error:", err));
+
+await redis.connect();
+
+export default redis;

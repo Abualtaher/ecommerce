@@ -44,24 +44,11 @@ function CreateProductForm() {
     const file = e.target.files[0];
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "ecommerce_unsigned"); // Your Cloudinary unsigned preset
-
-    try {
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dxrg1e8kt/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
-      setNewProduct({ ...newProduct, image: data.secure_url }); // Save the image URL in your product state
-    } catch (error) {
-      console.error("Image upload failed", error);
-    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setNewProduct({ ...newProduct, image: reader.result });
+    };
   };
   return (
     <motion.div

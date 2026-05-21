@@ -16,7 +16,11 @@ export const useProductStore = create((set) => ({
         loading: false,
       }));
     } catch (error) {
-      toast.error(error.response.data.error);
+      toast.error(
+        error?.response?.data?.error ||
+          error?.response?.data?.message ||
+          "Failed to create product",
+      );
       set({ loading: false });
     }
   },
@@ -46,7 +50,7 @@ export const useProductStore = create((set) => ({
       await axios.delete(`/products/${productId}`);
       set((prevProducts) => ({
         products: prevProducts.products.filter(
-          (product) => product._id !== productId
+          (product) => product._id !== productId,
         ),
         loading: false,
       }));
@@ -64,7 +68,7 @@ export const useProductStore = create((set) => ({
         products: prevProducts.products.map((product) =>
           product._id === productId
             ? { ...product, isFeatured: response.data.isFeatured }
-            : product
+            : product,
         ),
         loading: false,
       }));
