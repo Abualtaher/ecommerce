@@ -1,5 +1,5 @@
 import Product from "../models/product.model.js";
-import { redis } from "../lib/redis.js";
+import { redisGet, redisSet } from "../lib/redis.js";
 import cloudinary from "../lib/cloudinary.js";
 
 // Get all products
@@ -15,7 +15,7 @@ export const getAllProducts = async (req, res) => {
 // Get featured products with Redis caching
 export const getFeaturedProducts = async (req, res) => {
   try {
-    let featuredproducts = await redis.get("featured_products");
+    let featuredproducts = await redisGet("featured_products");
     if (featuredproducts) {
       return res.json(JSON.parse(featuredproducts));
     }
@@ -23,7 +23,7 @@ export const getFeaturedProducts = async (req, res) => {
     if (!featuredproducts) {
       return res.status(404).json({ message: "No featured products found" });
     }
-    await redis.set("featured_products", JSON.stringify(featuredproducts));
+    await redisSet("featured_products", JSON.stringify(featuredproducts));
     res.json(featuredproducts);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -143,7 +143,7 @@ export const toggleFeaturedProduct = async (req, res) => {
 async function updateFeaturedProductsCache() {
   try {
     const featuredProducts = await Product.find({ isFeatured: true }).lean();
-    await redis.set("featured_products", JSON.stringify(featuredProducts));
+    await redisSet("featured_products", JSON.stringify(featuredProducts));
   } catch (error) {
     console.error("Error in updateFeaturedProductsCache:", error);
   }
