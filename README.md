@@ -146,13 +146,20 @@ ecommerce-app/
 - Stripe checkout
 - Order creation
 
-### Admin Features
+## Admin Features
 
 - Create products
+- Update products
 - Delete products
-- Feature products
-- View sales statistics
-- Monitor revenue and orders
+- Mark products as featured
+- Remove products from featured products
+- View sales statistics and analytics
+
+**Note:** The admin dashboard is only available to users with administrator privileges.
+
+## Featured Products
+
+The Featured Products section is managed through the admin dashboard. Products only appear in this section after an administrator marks them as featured. If no products are marked as featured, the section will remain empty.
 
 ## Author
 
